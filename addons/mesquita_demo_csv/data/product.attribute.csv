@@ -1,0 +1,3 @@
+id,name,create_variant,display_type
+product_attribute_ancho_pl_mt,ANCHO_PL_MT,dynamic,select
+product_attribute_alto_pl_mt,ALTO_PL_MT,dynamic,select
