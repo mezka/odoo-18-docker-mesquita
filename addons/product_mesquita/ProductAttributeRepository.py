@@ -14,10 +14,10 @@ class ProductAttributeRepository:
 
         try:
             for product_attribute in product_attributes:
-                product_attribute_without_ext_id = {key: product_attribute[key] for key in product_attribute if key != 'ext_id'}
+                product_attribute_without_ext_id = {key: product_attribute[key] for key in product_attribute if key != 'id'}
                 created_product_attribute = self.env['product.attribute'].create(product_attribute_without_ext_id)
                 self.env['ir.model.data'].create({
-                    'name': product_attribute['ext_id'],
+                    'name': product_attribute['id'],
                     'model': 'product.attribute',
                     'res_id': created_product_attribute.id,
                     'module': get_module_name()
@@ -33,7 +33,6 @@ class ProductAttributeRepository:
             product_attributes_to_delete = self.env['product.attribute'].search([])
 
             for attribute in product_attributes_to_delete:
-                
                 external_ids = self.env['ir.model.data'].search([
                     ('model', '=', 'product.attribute'),
                     ('res_id', '=', attribute.id),
@@ -53,15 +52,16 @@ class ProductAttributeRepository:
 
         try:
             for product_attribute_value in product_attribute_values:
-                product_attribute = self.env.ref(f'{get_module_name()}.{product_attribute_value['ext_attribute_id']}')
+                
+                product_attribute = self.env.ref(f'{get_module_name()}.{product_attribute_value["attribute_id"]}')
                 product_attribute_value['attribute_id'] = product_attribute.id
                 
-                product_attribute_value_without_ext_ids = {key: product_attribute_value[key] for key in product_attribute_value if key not in ['ext_id', 'ext_attribute_id']}
+                product_attribute_value_without_ext_ids = {key: product_attribute_value[key] for key in product_attribute_value if key != 'id'}
 
                 created_product_attribute_value = self.env['product.attribute.value'].create(product_attribute_value_without_ext_ids)
 
                 self.env['ir.model.data'].create({
-                        'name': product_attribute_value['ext_id'],
+                        'name': product_attribute_value['id'],
                         'model': 'product.attribute.value',
                         'res_id': created_product_attribute_value.id,
                         'module': get_module_name()
