@@ -6,7 +6,6 @@ class SpreadsheetDataRepository():
         self.xlsx = pd.ExcelFile(xlsx_path)
         
         self._product_template_df = self.xlsx.parse('product.template')
-        self._product_template_df['attribute_line_ids/id'] = self._product_template_df['attribute_line_ids/id'].str.split(',')
         
         self._product_attribute_df = self.xlsx.parse('product.attribute')
         self._product_attribute_value_df = self.xlsx.parse('product.attribute.value')
